@@ -10,7 +10,7 @@ export default function TaskInput() {
       />
       <input type="date" className="bg-[#d6d6d6] outline-none" />
       <button>
-        <FaCirclePlus size={35} color="#3b82f6" />
+        <FaCirclePlus size={35} color="#3b82f6" className="hover:opacity-70" />
       </button>
     </div>
   );
