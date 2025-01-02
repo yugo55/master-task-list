@@ -7,3 +7,17 @@ body {
   scrollbar-color: #93c5fd #d4f0f9;
   scrollbar-width: thin !important;
 }
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: grey !important;
+  background-color: rgb(66, 66, 66);
+  border-radius: 99px;
+  height: 50px !important;
+  width: 30px !important;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 20px !important;
+}
