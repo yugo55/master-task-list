@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-color: #d6d6d6;
+  scrollbar-color: #93c5fd #d4f0f9;
+  scrollbar-width: thin !important;
+}
