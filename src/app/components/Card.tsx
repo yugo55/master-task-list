@@ -12,7 +12,7 @@ export default function Card() {
           <p className="text-sm">期限: 1月10日</p>
         </div>
       </div>
-      <button className="hidden group-hover:block">
+      <button className="opacity-0 group-hover:opacity-100 transition-all">
         <FaRegTrashCan
           color="red"
           size={20}
