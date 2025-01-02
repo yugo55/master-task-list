@@ -13,7 +13,11 @@ export default function Card() {
         </div>
       </div>
       <button className="hidden group-hover:block">
-        <FaRegTrashCan color="red" size={20} />
+        <FaRegTrashCan
+          color="red"
+          size={20}
+          className="hover:opacity-70 transition-all"
+        />
       </button>
     </div>
   );
