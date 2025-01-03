@@ -10,7 +10,9 @@ export default function Card(props: { todo: Todo }) {
         </button>
         <div>
           <p className="font-semibold">{props.todo.title}</p>
-          <p className="text-sm">期限: {props.todo.deadline.toString()}</p>
+          <p className="text-sm">
+            期限: {props.todo.deadline?.toString() || "なし"}
+          </p>
         </div>
       </div>
       <button className="opacity-0 group-hover:opacity-100 transition-all">

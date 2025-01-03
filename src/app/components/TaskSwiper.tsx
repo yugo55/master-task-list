@@ -47,7 +47,7 @@ export default function TaskSwiper() {
       <SwiperSlide className="!grid grid-cols-3 gap-14 mx-auto box-content">
         <div className="@container flex flex-col max-h-[85vh]">
           <TodoHeader month="1" />
-          <TaskInput month={202501} />
+          <TaskInput month={202501} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
             {getTodosByMonth(202501).map((todo) => (
               <Card key={todo.id} todo={todo} />
@@ -56,7 +56,7 @@ export default function TaskSwiper() {
         </div>
         <div className="@container flex flex-col max-h-[85vh]">
           <TodoHeader month="2" />
-          <TaskInput month={202502} />
+          <TaskInput month={202502} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
             {getTodosByMonth(202502).map((todo) => (
               <Card key={todo.id} todo={todo} />
@@ -65,7 +65,7 @@ export default function TaskSwiper() {
         </div>
         <div className="@container flex flex-col max-h-[85vh]">
           <TodoHeader month="3" />
-          <TaskInput month={202503} />
+          <TaskInput month={202503} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
             {getTodosByMonth(202503).map((todo) => (
               <Card key={todo.id} todo={todo} />

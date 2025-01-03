@@ -6,6 +6,7 @@ const dbConfig = {
   user: "root",
   password: "",
   database: "todo_app",
+  dateStrings: true,
 };
 
 export async function POST(req: NextRequest) {
@@ -17,9 +18,14 @@ export async function POST(req: NextRequest) {
       "INSERT todos (title, deadline, created_at, is_completed, month) VALUES (?, ?, ?, 0, ?)",
       [res.title, res.formattedDeadline, res.formattedCreatedAt, res.month]
     );
+    const [rows] = await connection.execute<ResultSetHeader>(
+      "SELECT * FROM todos WHERE id = ?",
+      [result.insertId]
+    );
     await connection.end();
 
     return NextResponse.json({
+      rows: rows,
       affectedRows: result.affectedRows,
     });
   } catch (error) {

@@ -1,11 +1,21 @@
 import { useState } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
+import { Todo } from "@/app/types/types";
 
-export default function TaskInput(props: { month: number }) {
+export default function TaskInput(props: {
+  month: number;
+  todos: Todo[];
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+}) {
   const [title, setTitle] = useState("");
   const [deadline, setDeadline] = useState<Date | null>(null);
 
-  const addTask = async (title: string, deadline?: Date | null) => {
+  const addTask = async (
+    todos: Todo[],
+    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
+    title: string,
+    deadline?: Date | null
+  ) => {
     try {
       const created_at = new Date();
       const month = props.month;
@@ -35,6 +45,7 @@ export default function TaskInput(props: { month: number }) {
         throw new Error(result.error || "タスク追加に失敗しました。");
       }
 
+      setTodos([result.rows[0], ...todos]);
       setTitle("");
       setDeadline(null);
     } catch (error: any) {
@@ -61,7 +72,7 @@ export default function TaskInput(props: { month: number }) {
         />
         <button
           onClick={() => {
-            addTask(title, deadline);
+            addTask(props.todos, props.setTodos, title, deadline);
           }}
         >
           <FaCirclePlus
