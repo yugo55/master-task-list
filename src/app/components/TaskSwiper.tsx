@@ -58,7 +58,12 @@ export default function TaskSwiper() {
           <TaskInput month={202501} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
             {getTodosByMonth(202501).map((todo) => (
-              <Card key={todo.id} todo={todo} />
+              <Card
+                key={todo.id}
+                todo={todo}
+                todos={todos}
+                setTodos={setTodos}
+              />
             ))}
           </div>
         </div>
@@ -67,7 +72,12 @@ export default function TaskSwiper() {
           <TaskInput month={202502} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
             {getTodosByMonth(202502).map((todo) => (
-              <Card key={todo.id} todo={todo} />
+              <Card
+                key={todo.id}
+                todo={todo}
+                todos={todos}
+                setTodos={setTodos}
+              />
             ))}
           </div>
         </div>
@@ -76,7 +86,12 @@ export default function TaskSwiper() {
           <TaskInput month={202503} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
             {getTodosByMonth(202503).map((todo) => (
-              <Card key={todo.id} todo={todo} />
+              <Card
+                key={todo.id}
+                todo={todo}
+                todos={todos}
+                setTodos={setTodos}
+              />
             ))}
           </div>
         </div>

@@ -12,7 +12,6 @@ const dbConfig = {
 export async function POST(req: NextRequest) {
   try {
     const res = await req.json();
-    console.log(res.deadline);
     const connection = await mysql.createConnection(dbConfig);
     const [result] = await connection.execute<ResultSetHeader>(
       "INSERT todos (title, deadline, created_at, is_completed, month) VALUES (?, ?, ?, 0, ?)",
