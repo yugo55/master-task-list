@@ -1,6 +1,7 @@
 import { FaRegTrashCan } from "react-icons/fa6";
+import { Todo } from "@/app/types/types";
 
-export default function Card() {
+export default function Card(props: { todo: Todo }) {
   return (
     <div className="flex items-center justify-between p-2 bg-blue-300 rounded shadow-lg mb-2 group">
       <div className="flex items-center">
@@ -8,8 +9,8 @@ export default function Card() {
           ✔️
         </button>
         <div>
-          <p className="font-semibold">タスク名</p>
-          <p className="text-sm">期限: 1月10日</p>
+          <p className="font-semibold">{props.todo.title}</p>
+          <p className="text-sm">期限: {props.todo.deadline.toString()}</p>
         </div>
       </div>
       <button className="opacity-0 group-hover:opacity-100 transition-all">
