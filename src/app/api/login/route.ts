@@ -8,13 +8,15 @@ const dbConfig = {
   database: "todo_app",
 };
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
-    const res = await req.json();
+    const searchParams = req.nextUrl.searchParams;
+    const email = searchParams.get("email");
+    const password = searchParams.get("password");
     const connection = await mysql.createConnection(dbConfig);
     const [result] = await connection.execute(
       "SELECT EXISTS(SELECT * FROM users WHERE email = ? AND password = ?) AS user_check",
-      [res.email, res.password]
+      [email, password]
     );
     await connection.end();
 

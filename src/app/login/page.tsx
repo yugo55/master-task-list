@@ -11,12 +11,9 @@ export default function Login() {
 
   const login = async (email: string, password: string) => {
     try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const query = new URLSearchParams({ email, password }).toString();
+      const res = await fetch(`/api/login?${query}`, {
+        method: "GET",
       });
 
       const result = await res.json();
