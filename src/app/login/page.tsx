@@ -7,7 +7,6 @@ export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [data, setData] = useState("");
 
   const login = async (email: string, password: string) => {
     try {
@@ -22,13 +21,14 @@ export default function Login() {
         throw new Error(result.error || "ログインに失敗しました。");
       }
 
-      console.log(result[0].user_check);
-      if (result[0].user_check === 1) {
+      if (result.result[0].user_check === 1) {
         var N = 255;
         const token = btoa(
           String.fromCharCode(...crypto.getRandomValues(new Uint8Array(N)))
         ).substring(0, N);
+        const user_id = result.rows[0].id;
         localStorage.setItem("token", token);
+        localStorage.setItem("user_id", user_id);
         router.push("/todo");
       } else {
         alert("ログインに失敗しました。");

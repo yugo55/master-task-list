@@ -7,14 +7,22 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useState, useEffect } from "react";
 import { Todo } from "@/app/types/types";
+import { useRouter } from "next/navigation";
 
 export default function TaskSwiper() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const res = await fetch("/api/todos", {
+        const user_id = localStorage.getItem("user_id");
+        if (!user_id) {
+          router.push("/login");
+          return;
+        }
+        const query = new URLSearchParams({ user_id }).toString();
+        const res = await fetch(`/api/todos?${query}`, {
           cache: "no-store",
         });
 

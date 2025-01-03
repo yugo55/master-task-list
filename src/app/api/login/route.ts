@@ -18,9 +18,13 @@ export async function GET(req: NextRequest) {
       "SELECT EXISTS(SELECT * FROM users WHERE email = ? AND password = ?) AS user_check",
       [email, password]
     );
+    const [rows] = await connection.execute(
+      "SELECT id FROM users WHERE email = ? AND password = ?",
+      [email, password]
+    );
     await connection.end();
 
-    return NextResponse.json(result);
+    return NextResponse.json({ rows, result });
   } catch (error) {
     console.error("アカウントが見つかりませんでした。");
     return NextResponse.json(

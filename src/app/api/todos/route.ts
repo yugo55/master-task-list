@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import mysql from "mysql2/promise";
 
 const dbConfig = {
@@ -9,11 +9,14 @@ const dbConfig = {
   dateStrings: true,
 };
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const searchParams = req.nextUrl.searchParams;
+    const user_id = searchParams.get("user_id");
     const connection = await mysql.createConnection(dbConfig);
     const [rows] = await connection.execute(
-      "SELECT * FROM todos ORDER BY created_at DESC"
+      "SELECT * FROM todos WHERE user_id = ? ORDER BY created_at DESC",
+      [user_id]
     );
     connection.end();
     return NextResponse.json(rows);
