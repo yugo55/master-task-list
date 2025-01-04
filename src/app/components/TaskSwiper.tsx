@@ -6,22 +6,24 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useState, useEffect } from "react";
-import { Todo } from "@/app/types/types";
+import { Todo, Target } from "@/app/types/types";
 import { useRouter } from "next/navigation";
 
 export default function TaskSwiper() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [targets, setTargets] = useState<Target[]>([]);
   const router = useRouter();
 
   useEffect(() => {
+    const user_id = localStorage.getItem("user_id");
+    if (!user_id) {
+      router.push("/login");
+      return;
+    }
+    const query = new URLSearchParams({ user_id }).toString();
+
     const fetchTodos = async () => {
       try {
-        const user_id = localStorage.getItem("user_id");
-        if (!user_id) {
-          router.push("/login");
-          return;
-        }
-        const query = new URLSearchParams({ user_id }).toString();
         const res = await fetch(`/api/todos?${query}`, {
           cache: "no-store",
         });
@@ -37,7 +39,25 @@ export default function TaskSwiper() {
       }
     };
 
+    const fetchTargets = async () => {
+      try {
+        const res = await fetch(`/api/targets?${query}`, {
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          throw new Error("目標の取得に失敗しました。");
+        }
+
+        const result: Target[] = await res.json();
+        setTargets(result);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     fetchTodos();
+    fetchTargets();
   }, []);
 
   const getTodosByMonth = (month: number) => {
@@ -54,7 +74,11 @@ export default function TaskSwiper() {
     >
       <SwiperSlide className="!grid grid-cols-3 gap-14 mx-auto box-content">
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="1" />
+          <TodoHeader
+            month={202501}
+            targets={targets}
+            setTargets={setTargets}
+          />
           <TaskInput month={202501} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
             {getTodosByMonth(202501).map((todo) => (
@@ -68,7 +92,11 @@ export default function TaskSwiper() {
           </div>
         </div>
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="2" />
+          <TodoHeader
+            month={202502}
+            targets={targets}
+            setTargets={setTargets}
+          />
           <TaskInput month={202502} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
             {getTodosByMonth(202502).map((todo) => (
@@ -82,7 +110,11 @@ export default function TaskSwiper() {
           </div>
         </div>
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="3" />
+          <TodoHeader
+            month={202503}
+            targets={targets}
+            setTargets={setTargets}
+          />
           <TaskInput month={202503} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
             {getTodosByMonth(202503).map((todo) => (
@@ -98,21 +130,21 @@ export default function TaskSwiper() {
       </SwiperSlide>
       {/* <SwiperSlide className="!grid grid-cols-3 gap-14 mx-auto box-content">
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="4" />
+          <TodoHeader month={202501} targets={targets} setTargets={setTargets} />
           <TaskInput month={202504} />
           <div className="flex-grow overflow-y-auto">
             <Card />
           </div>
         </div>
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="5" />
+          <TodoHeader month={202501} targets={targets} setTargets={setTargets} />
           <TaskInput month={202505} />
           <div className="flex-grow overflow-y-auto">
             <Card />
           </div>
         </div>
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="6" />
+          <TodoHeader month={202501} targets={targets} setTargets={setTargets} />
           <TaskInput month={202506} />
           <div className="flex-grow overflow-y-auto">
             <Card />
@@ -121,21 +153,21 @@ export default function TaskSwiper() {
       </SwiperSlide>
       <SwiperSlide className="!grid grid-cols-3 gap-14 mx-auto box-content">
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="7" />
+          <TodoHeader month={202501} targets={targets} setTargets={setTargets} />
           <TaskInput month={202507} />
           <div className="flex-grow overflow-y-auto">
             <Card />
           </div>
         </div>
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="8" />
+          <TodoHeader month={202501} targets={targets} setTargets={setTargets} />
           <TaskInput month={202508} />
           <div className="flex-grow overflow-y-auto">
             <Card />
           </div>
         </div>
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="9" />
+          <TodoHeader month={202501} targets={targets} setTargets={setTargets} />
           <TaskInput month={202509} />
           <div className="flex-grow overflow-y-auto">
             <Card />
@@ -144,21 +176,21 @@ export default function TaskSwiper() {
       </SwiperSlide>
       <SwiperSlide className="!grid grid-cols-3 gap-14 mx-auto box-content">
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="10" />
+          <TodoHeader month={202501} targets={targets} setTargets={setTargets}" />
           <TaskInput month={202510} />
           <div className="flex-grow overflow-y-auto">
             <Card />
           </div>
         </div>
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="11" />
+          <TodoHeader month={202501} targets={targets} setTargets={setTargets}" />
           <TaskInput month={202511} />
           <div className="flex-grow overflow-y-auto">
             <Card />
           </div>
         </div>
         <div className="@container flex flex-col max-h-[85vh]">
-          <TodoHeader month="12" />
+          <TodoHeader month={202501} targets={targets} setTargets={setTargets}" />
           <TaskInput month={202512} />
           <div className="flex-grow overflow-y-auto">
             <Card />

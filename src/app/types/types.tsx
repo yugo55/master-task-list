@@ -6,3 +6,10 @@ export type Todo = {
   is_completed: number;
   month: number;
 };
+
+export type Target = {
+  id: number;
+  content: string;
+  month: number;
+  user_id: number;
+};

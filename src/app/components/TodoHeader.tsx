@@ -1,12 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { FaXmark } from "react-icons/fa6";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { Target } from "@/app//types/types";
 
-export default function TodoHeader(props: { month: string }) {
+export default function TodoHeader(props: {
+  month: number;
+  targets: Target[];
+  setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [goal, setGoal] = useState("");
-  const [goals, setGoals] = useState<string[]>([]);
+  const [content, setContent] = useState("");
+
+  const addTarget = async (
+    content: string,
+    targets: Target[],
+    setTargets: React.Dispatch<React.SetStateAction<Target[]>>
+  ) => {
+    try {
+      const month = props.month;
+      const user_id = localStorage.getItem("user_id");
+      const res = await fetch("/api/targets/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content,
+          month,
+          user_id,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.error || "目標追加に失敗しました。");
+      }
+
+      setTargets([...targets, result[0]]);
+      setContent("");
+    } catch (error: any) {
+      console.error(error.message);
+      alert(error.message);
+    }
+  };
+
+  const getTargetsByMonth = (month: number) => {
+    return props.targets.filter((target) => target.month === month);
+  };
 
   return (
     <div
@@ -49,28 +91,29 @@ export default function TodoHeader(props: { month: string }) {
               </div>
               <p className="text-xl font-bold">目標</p>
               <ul className="mb-2">
-                {goals.map((goal) => (
-                  <li key={goal} className="flex items-center group">
+                {getTargetsByMonth(props.month).map((target) => (
+                  <li key={target.id} className="flex items-center group">
                     <FaRegTrashCan
                       color="red"
                       className="mr-1 hidden group-hover:block cursor-pointer hover:opacity-60"
-                      onClick={() => setGoals(goals.filter((g) => g !== goal))}
+                      // onClick={() =>
+                      //   setTargets(targets.filter((t) => t !== target))
+                      // }
                     />
-                    {goal}
+                    {target.content}
                   </li>
                 ))}
               </ul>
               <textarea
                 placeholder="目標を追加..."
                 className="outline-none w-full mb-1"
-                value={goal}
-                onChange={(e) => setGoal(e.target.value)}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
               />
               <button
                 className="bg-[#3b82f6] p-3 rounded-full text-white font-bold block ml-auto"
                 onClick={() => {
-                  setGoals([...goals, goal]);
-                  setGoal("");
+                  addTarget(content, props.targets, props.setTargets);
                 }}
               >
                 追加
