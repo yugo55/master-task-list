@@ -11,6 +11,10 @@ export default function TodoHeader(props: {
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
+  let formattedMonth = props.month.toString().slice(4, 6);
+  if (formattedMonth[0] === "0") {
+    formattedMonth = formattedMonth.slice(1, 2);
+  }
 
   const addTarget = async (
     content: string,
@@ -56,7 +60,7 @@ export default function TodoHeader(props: {
       className="bg-[#37555e] rounded p-2 shadow-lg mb-3 relative cursor-pointer after:opacity-0 after:transition-all after:duration-200 hover:after:content-[''] hover:after:block hover:after:absolute hover:after:inset-0 hover:after:bg-white hover:after:opacity-40 group"
     >
       <p className="text-center font-bold text-xl text-white">
-        {props.month}月
+        {formattedMonth}月
       </p>
       <div className="flex items-center">
         <span className="bg-[#d4f0f9] grid items-center w-12 h-12 text-center rounded-full mr-2">
@@ -81,7 +85,7 @@ export default function TodoHeader(props: {
               className="bg-white rounded-lg p-5 w-[90%] max-w-[800px] relative text-black max-h-[90%] overflow-y-auto"
             >
               <div className="flex justify-between mb-3">
-                <p className="text-2xl font-bold">{props.month}月</p>
+                <p className="text-2xl font-bold">{formattedMonth}月</p>
                 <button
                   onClick={() => setIsModalOpen(false)}
                   className="ml-auto block hover:opacity-60"
