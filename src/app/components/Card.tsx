@@ -1,11 +1,15 @@
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Todo } from "@/app/types/types";
+import { useState } from "react";
 
 export default function Card(props: {
   todo: Todo;
   todos: Todo[];
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }) {
+  // let isCompleted = props.todo.is_completed;
+  const [isCompleted, setIsCompleted] = useState(props.todo.is_completed);
+
   const removeTodo = async (
     id: number,
     todos: Todo[],
@@ -35,11 +39,41 @@ export default function Card(props: {
     }
   };
 
+  const completeTodo = async (id: number) => {
+    try {
+      const res = await fetch("/api/todos/complete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.error || "タスク完了に失敗しました。");
+      }
+
+      setIsCompleted((prev) => (prev === 1 ? 0 : 1));
+    } catch (error: any) {
+      console.error("タスク完了に失敗しました。");
+      alert("タスク完了に失敗しました。");
+    }
+  };
+
   return (
     <div className="flex items-center justify-between p-2 bg-blue-300 rounded shadow-lg mb-2 group">
       <div className="flex items-center">
-        <button className="block w-10 h-10 bg-white rounded-full mr-2">
-          ✔️
+        <button
+          onClick={() => completeTodo(props.todo.id)}
+          className={`block w-10 h-10 rounded-full mr-2 ${
+            isCompleted === 1 ? "bg-blue-500 text-white" : "bg-white"
+          }`}
+        >
+          ✔︎
         </button>
         <div>
           <p className="font-semibold">{props.todo.title}</p>
