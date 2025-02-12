@@ -26,6 +26,7 @@ export default function TaskInput(props: {
         .toISOString()
         .replace("T", " ")
         .slice(0, 19);
+      const userId = localStorage.getItem("user_id");
       const res = await fetch("/api/todos/add", {
         method: "POST",
         headers: {
@@ -36,6 +37,7 @@ export default function TaskInput(props: {
           formattedDeadline,
           formattedCreatedAt,
           month,
+          userId,
         }),
       });
 

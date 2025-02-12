@@ -11,11 +11,11 @@ const dbConfig = {
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const user_id = searchParams.get("user_id");
+    const userId = searchParams.get("user_id");
     const connection = await mysql.createConnection(dbConfig);
     const [rows] = await connection.execute(
       "SELECT * FROM targets WHERE user_id = ?",
-      [user_id]
+      [userId]
     );
     connection.end();
 
