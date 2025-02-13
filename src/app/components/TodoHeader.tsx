@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { FaXmark } from "react-icons/fa6";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Target } from "@/app//types/types";
+import { fetchProgress } from "@/utils/fetchProgress";
 
 export default function TodoHeader(props: {
   month: number;
@@ -11,10 +12,18 @@ export default function TodoHeader(props: {
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
+  const [progress, setProgress] = useState(0);
   let formattedMonth = props.month.toString().slice(4, 6);
   if (formattedMonth[0] === "0") {
     formattedMonth = formattedMonth.slice(1, 2);
   }
+
+  useEffect(() => {
+    const month = props.month.toString();
+    const userId = localStorage.getItem("user_id");
+
+    fetchProgress(month, userId, setProgress);
+  }, []);
 
   const addTarget = async (
     content: string,
@@ -64,7 +73,7 @@ export default function TodoHeader(props: {
       </p>
       <div className="flex items-center">
         <span className="bg-[#d4f0f9] grid items-center w-12 h-12 text-center rounded-full mr-2">
-          90%
+          {progress}%
         </span>
         <div className="w-[80%] h-2 bg-[#d4f0f9] rounded-full">
           <span className="block w-[90%] h-2 bg-blue-500 rounded-full" />

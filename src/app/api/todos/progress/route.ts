@@ -12,19 +12,18 @@ const dbConfig = {
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const userId = searchParams.get("user_id");
+    const month = searchParams.get("month");
+    const userId = searchParams.get("userId");
     const connection = await mysql.createConnection(dbConfig);
     const [rows] = await connection.execute(
-      "SELECT * FROM todos WHERE user_id = ? ORDER BY created_at DESC",
-      [userId]
+      "SELECT concat(round((sum(case is_completed WHEN '1' THEN 1 ELSE 0 END)/count(*) * 100), 0)) as per FROM todos WHERE month = ? AND user_id = ?",
+      [month, userId]
     );
     connection.end();
+
     return NextResponse.json(rows);
   } catch (error) {
-    console.error("タスク取得に失敗しました:", error);
-    return NextResponse.json(
-      { error: "タスク取得に失敗しました。" },
-      { status: 500 }
-    );
+    console.error("進捗率取得に失敗しました。:", error);
+    return NextResponse.json({ error: "進捗率取得に失敗" }, { status: 500 });
   }
 }

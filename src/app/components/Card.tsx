@@ -1,13 +1,15 @@
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Todo } from "@/app/types/types";
 import { useState } from "react";
+import { fetchProgress } from "@/utils/fetchProgress";
+
+// 親コンポーネントで月毎の進捗率の状態管理をする・Reduxを使う
 
 export default function Card(props: {
   todo: Todo;
   todos: Todo[];
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }) {
-  // let isCompleted = props.todo.is_completed;
   const [isCompleted, setIsCompleted] = useState(props.todo.is_completed);
 
   const removeTodo = async (
@@ -39,7 +41,7 @@ export default function Card(props: {
     }
   };
 
-  const completeTodo = async (id: number) => {
+  const completeTodo = async (id: number, month: number) => {
     try {
       const res = await fetch("/api/todos/complete", {
         method: "POST",
@@ -58,6 +60,11 @@ export default function Card(props: {
       }
 
       setIsCompleted((prev) => (prev === 1 ? 0 : 1));
+
+      const userId = localStorage.getItem("user_id");
+      fetchProgress(month.toString(), userId, (newProgress) => {
+        console.log("進捗率を更新:", newProgress);
+      });
     } catch (error: any) {
       console.error("タスク完了に失敗しました。");
       alert("タスク完了に失敗しました。");
@@ -68,7 +75,7 @@ export default function Card(props: {
     <div className="flex items-center justify-between p-2 bg-blue-300 rounded shadow-lg mb-2 group">
       <div className="flex items-center">
         <button
-          onClick={() => completeTodo(props.todo.id)}
+          onClick={() => completeTodo(props.todo.id, props.todo.month)}
           className={`block w-10 h-10 rounded-full mr-2 ${
             isCompleted === 1 ? "bg-blue-500 text-white" : "bg-white"
           }`}
