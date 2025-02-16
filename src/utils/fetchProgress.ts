@@ -1,7 +1,9 @@
 export const fetchProgress = async (
   month: string,
   userId: string | null,
-  setProgress: (value: number) => void
+  setProgress: React.Dispatch<
+    React.SetStateAction<{ month: number; progress: number }[]>
+  >
 ) => {
   if (!userId) return;
 
@@ -17,7 +19,22 @@ export const fetchProgress = async (
     }
 
     const result = await res.json();
-    setProgress(result[0].per);
+    setProgress((prevProgress) => {
+      const updatedProgress = prevProgress.map((p) =>
+        p.month === Number(month)
+          ? { ...p, progress: Number(result[0].per) }
+          : p
+      );
+
+      if (!updatedProgress.some((p) => p.month === Number(month))) {
+        updatedProgress.push({
+          month: Number(month),
+          progress: Number(result[0].per),
+        });
+      }
+
+      return updatedProgress;
+    });
   } catch (error) {
     console.error(error);
   }

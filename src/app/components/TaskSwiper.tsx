@@ -12,6 +12,9 @@ import { useRouter } from "next/navigation";
 export default function TaskSwiper() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [targets, setTargets] = useState<Target[]>([]);
+  const [progress, setProgress] = useState<
+    { month: number; progress: number }[]
+  >([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -78,6 +81,8 @@ export default function TaskSwiper() {
             month={202501}
             targets={targets}
             setTargets={setTargets}
+            progress={progress}
+            setProgress={setProgress}
           />
           <TaskInput month={202501} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
@@ -87,6 +92,8 @@ export default function TaskSwiper() {
                 todo={todo}
                 todos={todos}
                 setTodos={setTodos}
+                progress={progress}
+                setProgress={setProgress}
               />
             ))}
           </div>
@@ -96,6 +103,8 @@ export default function TaskSwiper() {
             month={202502}
             targets={targets}
             setTargets={setTargets}
+            progress={progress}
+            setProgress={setProgress}
           />
           <TaskInput month={202502} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
@@ -105,6 +114,8 @@ export default function TaskSwiper() {
                 todo={todo}
                 todos={todos}
                 setTodos={setTodos}
+                progress={progress}
+                setProgress={setProgress}
               />
             ))}
           </div>
@@ -114,6 +125,8 @@ export default function TaskSwiper() {
             month={202503}
             targets={targets}
             setTargets={setTargets}
+            progress={progress}
+            setProgress={setProgress}
           />
           <TaskInput month={202503} todos={todos} setTodos={setTodos} />
           <div className="flex-grow overflow-y-auto">
@@ -123,6 +136,8 @@ export default function TaskSwiper() {
                 todo={todo}
                 todos={todos}
                 setTodos={setTodos}
+                progress={progress}
+                setProgress={setProgress}
               />
             ))}
           </div>

@@ -9,10 +9,13 @@ export default function TodoHeader(props: {
   month: number;
   targets: Target[];
   setTargets: React.Dispatch<React.SetStateAction<Target[]>>;
+  progress: { month: number; progress: number }[];
+  setProgress: React.Dispatch<
+    React.SetStateAction<{ month: number; progress: number }[]>
+  >;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
-  const [progress, setProgress] = useState(0);
   let formattedMonth = props.month.toString().slice(4, 6);
   if (formattedMonth[0] === "0") {
     formattedMonth = formattedMonth.slice(1, 2);
@@ -22,7 +25,7 @@ export default function TodoHeader(props: {
     const month = props.month.toString();
     const userId = localStorage.getItem("user_id");
 
-    fetchProgress(month, userId, setProgress);
+    fetchProgress(month, userId, props.setProgress);
   }, []);
 
   const addTarget = async (
@@ -73,7 +76,7 @@ export default function TodoHeader(props: {
       </p>
       <div className="flex items-center">
         <span className="bg-[#d4f0f9] grid items-center w-12 h-12 text-center rounded-full mr-2">
-          {progress}%
+          {props.progress.find((p) => p.month === props.month)?.progress ?? 0}%
         </span>
         <div className="w-[80%] h-2 bg-[#d4f0f9] rounded-full">
           <span className="block w-[90%] h-2 bg-blue-500 rounded-full" />

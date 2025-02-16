@@ -3,12 +3,16 @@ import { Todo } from "@/app/types/types";
 import { useState } from "react";
 import { fetchProgress } from "@/utils/fetchProgress";
 
-// 親コンポーネントで月毎の進捗率の状態管理をする・Reduxを使う
+// 親コンポーネントで月毎の進捗率の状態管理をする → 状態変数progressにそれぞれの月の進捗率を格納
 
 export default function Card(props: {
   todo: Todo;
   todos: Todo[];
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  progress: { month: number; progress: number }[];
+  setProgress: React.Dispatch<
+    React.SetStateAction<{ month: number; progress: number }[]>
+  >;
 }) {
   const [isCompleted, setIsCompleted] = useState(props.todo.is_completed);
 
@@ -62,9 +66,7 @@ export default function Card(props: {
       setIsCompleted((prev) => (prev === 1 ? 0 : 1));
 
       const userId = localStorage.getItem("user_id");
-      fetchProgress(month.toString(), userId, (newProgress) => {
-        console.log("進捗率を更新:", newProgress);
-      });
+      fetchProgress(month.toString(), userId, props.setProgress);
     } catch (error: any) {
       console.error("タスク完了に失敗しました。");
       alert("タスク完了に失敗しました。");
